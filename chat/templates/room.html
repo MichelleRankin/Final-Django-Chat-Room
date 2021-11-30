@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+  <nav class="navbar navbar-expand-sm" style="">
+    <div
+      class="collapse navbar-collapse"
+      style="height: 60px; margin-top: 10px"
+      id="navbarNav"
+    >
+      <ul class="navbar-nav">
+        <span
+          class="hello-msg"
+          style="color: white; float: left; font-size: 24px; padding: 0px; text-decoration: none;"
+          ><a style="text-decoration: none; color: white;"href="{% url 'profile' %}"><b>Hello, {{request.user}}</b>
+        </span>
+
+        <span
+          ><a
+            class="hello-msg"
+            href="{% url 'login' %}"
+            style="font-size: 25px; color: white; text-decoration: none"
+            ><b>Logout</b></a
+          ></span
+        >
+        <a
+          class="main_title"
+          href="{% url 'home' %}"
+          style="
+            color: white;
+            float: right;
+            margin: 0px !important;
+            font-size: 25px;
+            curser: pointer;
+            text-decoration: none;
+          "
+        >
+          <b>Django Chat App</b>
+        </a>
+      </ul>
+    </div>
+  </nav>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      .navbar navbar-expand-lg {
+        margin-top: 15px;
+      }
+      body {
+        margin: 0 auto;
+        max-width: 800px;
+        padding: 0 20px;
+        color: white;
+        text-align: center;
+        background-image: linear-gradient(to right, black, red, black);
+      }
+      .collapsable {
+        float: right;
+        background: none;
+        border: none;
+        font-size: 25px;
+        cursor: pointer;
+        padding-top: -10px;
+      }
+      .collapsable:hover {
+        background: white;
+        border: inline;
+      }
+      #display {
+        overflow: auto;
+        height: 500px;
+      }
+
+      .container {
+        border: 2px double red;
+        background-color: black;
+        border-radius: 5px;
+        padding: 10px;
+        margin: 10px 0;
+        color: black;
+        text-align: left;
+        overflow: auto;
+      }
+
+      .darker {
+        border: 2px double red;
+        background-color: lightgrey;
+        overflow: auto;
+        width: 700px;
+      }
+
+      .container::after {
+        content: "";
+        clear: both;
+        display: table;
+      }
+
+      .container img {
+        float: left;
+        max-width: 60px;
+        width: 100%;
+        margin-right: 20px;
+        border-radius: 50%;
+      }
+
+      .container img.right {
+        float: right;
+        margin-left: 20px;
+        margin-right: 0;
+      }
+
+      .time-right {
+        float: right;
+        color: black;
+      }
+
+      .time-left {
+        float: left;
+        color: black;
+      }
+      .reverse {
+        display: flex;
+        flex-direction: row-reverse;
+      }
+
+      .buttoncontent {
+        overflow: hidden;
+        color: white;
+      }
+    </style>
+    <script
+      src="https://code.jquery.com/jquery-3.1.1.min.js"
+      integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+      crossorigin="anonymous"
+    ></script>
+  </head>
+
+  <body background-image="background1.png">
+    <h2>Chat Room - {{room}}</h2>
+
+    <div id="display">
+      <!-- <div class="container darker">
+  <b>Tom</b><p>Hello Everyone, How Are You Guys Doing?</p>
+  <span class="time-left">20th, April 2021</span>
+</div> -->
+      <div
+        class="button-1ZiXG9"
+        aria-label="More"
+        aria-controls="popout_158"
+        aria-expanded="false"
+        role="button"
+        tabindex="0"
+      >
+        <svg
+          class="icon-3Gkjwa"
+          aria-hidden="false"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+        ></svg>
+      </div>
+    </div>
+
+    <script>
+      $(document).ready(function () {
+        setInterval(function () {
+          $.ajax({
+            type: "GET",
+            url: "/getMessages/{{room}}/",
+            success: function (response) {
+              console.log(response);
+              $("#display").empty();
+              for (var key in response.messages) {
+                var temp =
+                  "<div class='container darker'><img src='https://p0.pxfuel.com/preview/937/847/672/people-shadow-dark-night.jpg'><b>" +
+                  response.messages[key].user +
+                  "</b><p>" +
+                  response.messages[key].value +
+                  "</p><span class='time-left'>" +
+                  response.messages[key].date +
+                  "</span></div>";
+                $("#display").append(temp);
+              }
+            },
+            error: function (response) {
+              alert("An error occured");
+            },
+          });
+        }, 1000);
+      });
+    </script>
+
+    <div class="container">
+      <style>
+        input[type="text"],
+        select {
+          background-color: lightgrey;
+          width: 100%;
+          padding: 12px 20px;
+          margin: 8px 0;
+          display: inline-block;
+          border: 3px double red;
+          border-radius: 4px;
+          box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+          width: 100%;
+          background-color: darkred;
+          color: white;
+          padding: 14px 20px;
+          margin: 8px 0;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+          background-color: red;
+        }
+
+        div {
+          border: 3px double red;
+          border-radius: 5px;
+          background-color: black;
+          padding: 30px;
+        }
+      </style>
+
+      <form id="post-form">
+        {% csrf_token %}
+        <input
+          type="hidden"
+          name="username"
+          id="username"
+          value="{{username}}"
+        />
+        <input
+          type="hidden"
+          name="room_id"
+          id="room_id"
+          value="{{room_details.id}}"
+        />
+        <input
+          type="text"
+          name="message"
+          id="message"
+          width="100px"
+          placeholder="Type Message Here.."
+        />
+
+        <input type="submit" value="Send" />
+      </form>
+    </div>
+  </body>
+
+  <script type="text/javascript">
+    $(document).on("submit", "#post-form", function (e) {
+      e.preventDefault();
+
+      $.ajax({
+        type: "POST",
+        url: "/send",
+        data: {
+          username: $("#username").val(),
+          room_id: $("#room_id").val(),
+          message: $("#message").val(),
+          csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
+        },
+        success: function (data) {
+          //alert(data)
+        },
+      });
+      document.getElementById("message").value = "";
+    });
+  </script>
+</html>

@@ -1,0 +1,106 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Profile</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+      integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+      crossorigin="anonymous"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.6.1/css/all.css"
+      integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body
+    style="
+      background-image: linear-gradient(to right, black, red, black) !important;
+    "
+  >
+    <style>
+      .body {
+        color: white;
+        text-align: center;
+        background-image: linear-gradient(
+          to right,
+          black,
+          red,
+          black
+        ) !important;
+      }
+      .form-container {
+        justify-content: center;
+      }
+      .container {
+        color: white;
+        text-align: center;
+        font-size: 4vh;
+      }
+      .d {
+        border: 2px double red;
+        background-color: black;
+        border-radius: 5px;
+        padding: 10px;
+        margin: 10px 0;
+      }
+      .profile_pic {
+        height: 10vh;
+        width: 20vh;
+        padding-left: 10px;
+        margin-left: 20px;
+      }
+    </style>
+    <a
+      class="btn btn-secondary btn-sm btn-block"
+      style="height: 25px"
+      href="{% url 'home' %}"
+      >Go Back</a
+    >
+    <div class="container">
+      <div class="user_card" style="height: 100%">
+        <div class="d">
+          <h3 id="form-title" style="padding-bottom: 30px; font-size: 5vh">
+            CURRENT INFO
+          </h3>
+        </div>
+        <div class="form_container" style="height: 200%; width: 100%">
+          <hr />
+          <hr />
+          <p style="padding-left: 20px">Phone Number: {{current.phone}}</p>
+          <hr />
+          <p style="padding-left: 20px">Email: {{current.email}}</p>
+          <p style="padding-left: 20px">Profile Picture:</p>
+          {% if current.profile_pic != "" %}<img
+            class="profile_pic"
+            style="height: 50vh; width: 70vh"
+            src="{{current.profile_pic}}"
+          />{% else %}<img
+            class="product_image"
+            style="height: 100px; width: 100px"
+            src="https://p0.pxfuel.com/preview/937/847/672/people-shadow-dark-night.jpg"
+          />{% endif %}
+          <button
+            style="background-color: black; color: white; border: double red"
+          >
+            <a
+              style="
+                color: white;
+                background-color: black;
+                border: none;
+                text-decoration: none;
+              "
+              href="{% url 'updateprofile' %}"
+              >Update your Profile</a
+            >
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
